@@ -9,7 +9,7 @@ const controller = {};
 
 // Lấy danh sách
 controller.getSurfaces = async (req, res) => {
-    const { spaceId } = req.param;
+    const { spaceId } = req.params;
     const conditions = { space: spaceId };
     const result = await model.getAll(conditions);
     res.status(200).json(result);
