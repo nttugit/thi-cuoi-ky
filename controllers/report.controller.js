@@ -3,7 +3,10 @@
  * - nhớ import đúng model dưới đây
  */
 import Model from '../models/report.model.js';
+import SurfaceModel from '../models/surface.model.js';
+
 const model = new Model();
+const surfaceModel = new SurfaceModel();
 
 const controller = {};
 
@@ -18,10 +21,21 @@ controller.getReports = async (req, res) => {
 // // Tạo mới
 controller.postReport = async (req, res) => {
     const { surfaceId } = req.params;
+
+    // data from surface
+    const joins = [
+        ['spaces', 'surfaces.space', '=', 'spaces.id'],
+    ];
+    const surface = await surfaceModel.getByIdWithJoin(surfaceId, joins);
+
     let data = req.body;
 
     data.surface = parseInt(surfaceId);
-    data.report_date = new Date()
+    data.report_date = new Date();
+    data.address = surface.address;
+    data.long = surface.long;
+    data.lat = surface.lat;
+    console.log(data)
     const ret = await model.create(data);
     data = {
         id: ret[0],

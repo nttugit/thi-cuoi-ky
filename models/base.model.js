@@ -56,7 +56,7 @@ class BaseModel {
 
     async getByIdWithJoin(id, joins = []) {
         const conditions = {};
-        conditions[this.tableId] = id;
+        conditions[`${this.tableName}.id`] = id;
 
         let query = this.knex
             .select('*')
